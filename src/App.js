@@ -1,23 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import HomeScreen from './screen/HomeScreen';
+import Footer from './components/Footer';
+import { Routes, Route } from 'react-router-dom';
+import AvailabilityScreen from './screen/AvailabilityScreen';
+import ApplyScreen from './screen/ApplyScreen';
+import DocScreen from './screen/DocScreen';
+import SignInScreen from './screen/SignInScreen';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/availability" element={<AvailabilityScreen />} />
+        <Route path="/apply" element={<ApplyScreen />} />
+        <Route path="/documents" element={<DocScreen />} />
+        <Route path="/signin" element={<SignInScreen />} />
+      </Routes>
+      
+      <Footer />
     </div>
   );
 }
