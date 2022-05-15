@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useState } from "react";
+import { Typography } from "@mui/material";
+import { Select, MenuItem, InputLabel } from "@mui/material";
 
 const ApplyScreen = () => {
-  return (
-    <div>ApplyScreen</div>
-  )
-}
 
-export default ApplyScreen
+  // try and use formik with MUI? Validate using YUP?
+
+  return (
+    <div className="main-page">
+      <Typography variant="h2" sx={{ marginTop: 10, marginBottom: 5 }}>
+        Apply Now
+      </Typography>
+      
+    </div>
+  );
+};
+
+export default ApplyScreen;

@@ -15,9 +15,12 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import house from "../../assets/house.jpeg";
-// import { ExpandMore } from "@mui/icons-material";
+import useMoney from "../../hooks/useMoney";
+import { CheckBox } from "@mui/icons-material";
+import { Box } from "@mui/system";
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
+// This is a styled component that allows for a rotating arrow
+const ExpandMore = styled((props: ExpandMoreProps) => { 
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
@@ -28,19 +31,20 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-const PropertyCard = () => {
+const PropertyCard = ({house}) => {
   const [expanded, setExpanded] = useState(false)
+  const price = useMoney(house.price)
 
   const handleExpandClick = () => setExpanded(!expanded)
   return (
-    <Card className={expanded ? "propertyCardActive" : "propertyCard"}>
+    <Card className="propertyCard" id={expanded && "propertyCardActive"}>
       <CardHeader
-        title="3 Bed 2 Ba"
-        subheader="123 North 456 East, Orem, UT 84057"
+        title={`${house.bed} Bed ${house.bath} Bath`}
+        subheader={`${house.address}`}
       />
-      <CardMedia component="img" height="200" image={house} />
+      <CardMedia component="img" height="200" image={house.imageList[0]} />
       <CardContent sx={{display: "flex", justifyContent: 'space-between'}}>
-        <Typography variant="h4">$1,800</Typography>
+        <Typography variant="h4">{price}</Typography>
       <CardActions disableSpacing>
         <ExpandMore
           expand={expanded}
@@ -58,6 +62,12 @@ const PropertyCard = () => {
           <Typography paragraph>
             This is a great property. Just look at it! Absolutely stunning!
           </Typography>
+          {house.garage && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Garage</Typography></Box>}
+          {house.heating && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Heating</Typography></Box>}
+          {house.laundry && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Laundry</Typography></Box>}
+          {house.pets && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Pet Friendly</Typography></Box>}
+          {house.wifi && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Wifi</Typography></Box>}
+          
         </CardContent>
       </Collapse>
     </Card>
