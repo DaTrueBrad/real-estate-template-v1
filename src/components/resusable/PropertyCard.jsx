@@ -18,6 +18,8 @@ import house from "../../assets/house.jpeg";
 import useMoney from "../../hooks/useMoney";
 import { CheckBox } from "@mui/icons-material";
 import { Box } from "@mui/system";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 // This is a styled component that allows for a rotating arrow
 const ExpandMore = styled((props: ExpandMoreProps) => { 
@@ -33,16 +35,25 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 const PropertyCard = ({house}) => {
   const [expanded, setExpanded] = useState(false)
+  const navigate = useNavigate()
   const price = useMoney(house.price)
-
+  const addressLine = `${house.address1} ${house.address2}
+    ${house.city}, ${house.state} ${house.zip}`
+    const subtitle = <span style={{lineHeight: ""}}>{house.address1 + " " + house.address2}<br />{house.city + " " + house.state + " " + house.zip}</span>
+   
   const handleExpandClick = () => setExpanded(!expanded)
+
+  const goToDetails = () => {
+    navigate(`/details/${house.id}`)
+  }
   return (
     <Card className="propertyCard" id={expanded && "propertyCardActive"}>
       <CardHeader
         title={`${house.bed} Bed ${house.bath} Bath`}
-        subheader={`${house.address}`}
+        subheader={subtitle}
       />
-      <CardMedia component="img" height="200" image={house.imageList[0]} />
+      {/* <Typography variant="p">{addressLine}</Typography> */}
+      <CardMedia component="img" height="200" image={house.imageList[0]}  onClick={goToDetails}/>
       <CardContent sx={{display: "flex", justifyContent: 'space-between'}}>
         <Typography variant="h4">{price}</Typography>
       <CardActions disableSpacing>
@@ -67,7 +78,7 @@ const PropertyCard = ({house}) => {
           {house.laundry && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Laundry</Typography></Box>}
           {house.pets && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Pet Friendly</Typography></Box>}
           {house.wifi && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Wifi</Typography></Box>}
-          
+          <Button variant="contained" onClick={goToDetails}>See More</Button>
         </CardContent>
       </Collapse>
     </Card>

@@ -2,29 +2,18 @@ import { CenterFocusWeakOutlined } from "@mui/icons-material";
 
 const homes = [
   {
-    address: '123 N 456 E, Orem, UT 84059',
-    available: '05/22/2022',
-    deposit: 2000,
-    price: 1750,
-    bed: 3,
-    bath: 2,
-    sqFeet: 1800,
-    heating: true,
-    garage: true,
-    laundry: true,
-    pets: false,
-    wifi: true,
-    imageList: [
-      'https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg'
-    ]
-  },
-  {
-    address: '111 N 222 E, Provo, UT 84059',
-    available: '05/31/2022',
+    id: "893745905",
+    address1: "111 N 222 E",
+    address2: "",
+    city: "Provo",
+    state: "UT",
+    zip: 84059,
+    available: "05/31/2022",
+    type: "Sale",
     deposit: 1500,
     bed: 2,
     bath: 2,
-    price: 1400,
+    price: 550000,
     sqFeet: 1200,
     heating: true,
     garage: false,
@@ -32,12 +21,24 @@ const homes = [
     pets: false,
     wifi: true,
     imageList: [
-      'https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg'
-    ]
+      "https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg",
+      "https://v2.edificecms.com/builder/elements/images/uploads/project130/15971795429317.jpg",
+      "http://builtbyhomemakers.com/wp-content/uploads/2021/03/Exterior-of-New-Home-in-Lubbock-TX-DSC06333.jpg",
+      "https://www.cobblestonehomesrealestate.com/wp-content/uploads/2020/01/WHAT-EXACTLY-IS-THE-SHOWCASE-HOME.jpeg",
+      "https://dlqxt4mfnxo6k.cloudfront.net/westondeanhomes.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC81YzRmZDhiYTk5ZDBhMDQ1NTQ3ZmZiOWQ1N2ZhOWQ3Yy5qcGVn/2000/2000",
+      "https://images.squarespace-cdn.com/content/v1/5e0e16044ce9a12790e1596e/1591889572404-XAQT6P9PG96R9ITX7BZR/Custom+Traditional+New+Home+in+Edina27.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoT0wqd2dQKEQvrzgJ3Bo87W-x9KBiOG687A&usqp=CAU",
+    ],
   },
   {
-    address: '801 E 222 N, Vineyard, UT 84059',
-    available: '07/02/2022',
+    id: "9384675",
+    address1: "801 E 222 N",
+    address2: "",
+    city: "Vineyard",
+    state: "UT",
+    zip: 84059,
+    available: "07/02/2022",
+    type: "Rent",
     deposit: 1500,
     bed: 1,
     bath: 1,
@@ -49,12 +50,24 @@ const homes = [
     pets: false,
     wifi: true,
     imageList: [
-      'https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg'
-    ]
+      "https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg",
+      "https://v2.edificecms.com/builder/elements/images/uploads/project130/15971795429317.jpg",
+      "http://builtbyhomemakers.com/wp-content/uploads/2021/03/Exterior-of-New-Home-in-Lubbock-TX-DSC06333.jpg",
+      "https://www.cobblestonehomesrealestate.com/wp-content/uploads/2020/01/WHAT-EXACTLY-IS-THE-SHOWCASE-HOME.jpeg",
+      "https://dlqxt4mfnxo6k.cloudfront.net/westondeanhomes.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC81YzRmZDhiYTk5ZDBhMDQ1NTQ3ZmZiOWQ1N2ZhOWQ3Yy5qcGVn/2000/2000",
+      "https://images.squarespace-cdn.com/content/v1/5e0e16044ce9a12790e1596e/1591889572404-XAQT6P9PG96R9ITX7BZR/Custom+Traditional+New+Home+in+Edina27.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoT0wqd2dQKEQvrzgJ3Bo87W-x9KBiOG687A&usqp=CAU",
+    ],
   },
   {
-    address: '1167 N 200 W #C3, Eagle Mountain, UT 84501',
-    available: '05/31/2022',
+    id: "00927",
+    address1: "1167 N 200 W",
+    address2: "#C3",
+    city: "Eagle Mountain",
+    state: "UT",
+    zip: 84501,
+    available: "05/31/2022",
+    type: "Student",
     deposit: 1500,
     bed: 2,
     bath: 2,
@@ -66,12 +79,24 @@ const homes = [
     pets: true,
     wifi: true,
     imageList: [
-      'https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg'
-    ]
+      "https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg",
+      "https://v2.edificecms.com/builder/elements/images/uploads/project130/15971795429317.jpg",
+      "http://builtbyhomemakers.com/wp-content/uploads/2021/03/Exterior-of-New-Home-in-Lubbock-TX-DSC06333.jpg",
+      "https://www.cobblestonehomesrealestate.com/wp-content/uploads/2020/01/WHAT-EXACTLY-IS-THE-SHOWCASE-HOME.jpeg",
+      "https://dlqxt4mfnxo6k.cloudfront.net/westondeanhomes.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC81YzRmZDhiYTk5ZDBhMDQ1NTQ3ZmZiOWQ1N2ZhOWQ3Yy5qcGVn/2000/2000",
+      "https://images.squarespace-cdn.com/content/v1/5e0e16044ce9a12790e1596e/1591889572404-XAQT6P9PG96R9ITX7BZR/Custom+Traditional+New+Home+in+Edina27.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoT0wqd2dQKEQvrzgJ3Bo87W-x9KBiOG687A&usqp=CAU",
+    ],
   },
   {
-    address: '4581 W 500 N #201, Salt Lake City, UT 84102',
-    available: '04/15/2022',
+    id: "3947572",
+    address1: "4581 W 500 N",
+    address2: "#201",
+    city: "Salt Lake City",
+    state: "UT",
+    zip: 84102,
+    available: "04/15/2022",
+    type: "Rent",
     deposit: 2600,
     bed: 3,
     bath: 2,
@@ -83,16 +108,28 @@ const homes = [
     pets: true,
     wifi: true,
     imageList: [
-      'https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg'
-    ]
+      "https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg",
+      "https://v2.edificecms.com/builder/elements/images/uploads/project130/15971795429317.jpg",
+      "http://builtbyhomemakers.com/wp-content/uploads/2021/03/Exterior-of-New-Home-in-Lubbock-TX-DSC06333.jpg",
+      "https://www.cobblestonehomesrealestate.com/wp-content/uploads/2020/01/WHAT-EXACTLY-IS-THE-SHOWCASE-HOME.jpeg",
+      "https://dlqxt4mfnxo6k.cloudfront.net/westondeanhomes.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC81YzRmZDhiYTk5ZDBhMDQ1NTQ3ZmZiOWQ1N2ZhOWQ3Yy5qcGVn/2000/2000",
+      "https://images.squarespace-cdn.com/content/v1/5e0e16044ce9a12790e1596e/1591889572404-XAQT6P9PG96R9ITX7BZR/Custom+Traditional+New+Home+in+Edina27.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoT0wqd2dQKEQvrzgJ3Bo87W-x9KBiOG687A&usqp=CAU",
+    ],
   },
   {
-    address: '123 E Shamballa Blvd, Spanish Fork, UT 84059',
-    available: '09/26/2022',
+    id: "9375",
+    address1: "123 E Shamballa Blvd",
+    address2: "",
+    city: "Spanish Fork",
+    state: "UT",
+    zip: 84059,
+    available: "09/26/2022",
+    type: "Sale",
     deposit: 1000,
     bed: 2,
     bath: 1,
-    price: 1200,
+    price: 400000,
     sqFeet: 1000,
     heating: true,
     garage: true,
@@ -100,12 +137,24 @@ const homes = [
     pets: false,
     wifi: true,
     imageList: [
-      'https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg'
-    ]
+      "https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg",
+      "https://v2.edificecms.com/builder/elements/images/uploads/project130/15971795429317.jpg",
+      "http://builtbyhomemakers.com/wp-content/uploads/2021/03/Exterior-of-New-Home-in-Lubbock-TX-DSC06333.jpg",
+      "https://www.cobblestonehomesrealestate.com/wp-content/uploads/2020/01/WHAT-EXACTLY-IS-THE-SHOWCASE-HOME.jpeg",
+      "https://dlqxt4mfnxo6k.cloudfront.net/westondeanhomes.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC81YzRmZDhiYTk5ZDBhMDQ1NTQ3ZmZiOWQ1N2ZhOWQ3Yy5qcGVn/2000/2000",
+      "https://images.squarespace-cdn.com/content/v1/5e0e16044ce9a12790e1596e/1591889572404-XAQT6P9PG96R9ITX7BZR/Custom+Traditional+New+Home+in+Edina27.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoT0wqd2dQKEQvrzgJ3Bo87W-x9KBiOG687A&usqp=CAU",
+    ],
   },
   {
-    address: '606 N Freedom Blvd, Provo, UT 84059',
-    available: '05/14/2022',
+    id: "112334",
+    address1: "606 N Freedom Blvd",
+    address2: "",
+    city: "Provo",
+    state: "UT",
+    zip: 84059,
+    available: "05/14/2022",
+    type: "Student",
     deposit: 3000,
     bed: 4,
     bath: 3,
@@ -117,12 +166,24 @@ const homes = [
     pets: false,
     wifi: true,
     imageList: [
-      'https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg'
-    ]
+      "https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg",
+      "https://v2.edificecms.com/builder/elements/images/uploads/project130/15971795429317.jpg",
+      "http://builtbyhomemakers.com/wp-content/uploads/2021/03/Exterior-of-New-Home-in-Lubbock-TX-DSC06333.jpg",
+      "https://www.cobblestonehomesrealestate.com/wp-content/uploads/2020/01/WHAT-EXACTLY-IS-THE-SHOWCASE-HOME.jpeg",
+      "https://dlqxt4mfnxo6k.cloudfront.net/westondeanhomes.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC81YzRmZDhiYTk5ZDBhMDQ1NTQ3ZmZiOWQ1N2ZhOWQ3Yy5qcGVn/2000/2000",
+      "https://images.squarespace-cdn.com/content/v1/5e0e16044ce9a12790e1596e/1591889572404-XAQT6P9PG96R9ITX7BZR/Custom+Traditional+New+Home+in+Edina27.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoT0wqd2dQKEQvrzgJ3Bo87W-x9KBiOG687A&usqp=CAU",
+    ],
   },
   {
-    address: '8374 N 750 E, Bountiful, UT 84059',
-    available: '05/13/2022',
+    id: "838456",
+    address1: "8374 N 750 E",
+    address2: "",
+    city: "Bountiful",
+    state: "UT",
+    zip: 84059,
+    available: "05/13/2022",
+    type: "Rent",
     deposit: 1500,
     bed: 2,
     bath: 2,
@@ -134,9 +195,15 @@ const homes = [
     pets: false,
     wifi: true,
     imageList: [
-      'https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg'
-    ]
+      "https://harbourhomes.com/revslider/media/12d6b-cypress-copper-rim_0018_DSC_3498.jpg",
+      "https://v2.edificecms.com/builder/elements/images/uploads/project130/15971795429317.jpg",
+      "http://builtbyhomemakers.com/wp-content/uploads/2021/03/Exterior-of-New-Home-in-Lubbock-TX-DSC06333.jpg",
+      "https://www.cobblestonehomesrealestate.com/wp-content/uploads/2020/01/WHAT-EXACTLY-IS-THE-SHOWCASE-HOME.jpeg",
+      "https://dlqxt4mfnxo6k.cloudfront.net/westondeanhomes.com/aHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL2J1aWxkZXJjbG91ZC81YzRmZDhiYTk5ZDBhMDQ1NTQ3ZmZiOWQ1N2ZhOWQ3Yy5qcGVn/2000/2000",
+      "https://images.squarespace-cdn.com/content/v1/5e0e16044ce9a12790e1596e/1591889572404-XAQT6P9PG96R9ITX7BZR/Custom+Traditional+New+Home+in+Edina27.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoT0wqd2dQKEQvrzgJ3Bo87W-x9KBiOG687A&usqp=CAU",
+    ],
   },
-]
+];
 
-export default homes
+export default homes;

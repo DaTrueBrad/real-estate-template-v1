@@ -7,7 +7,6 @@ const useMoney = (num) => {
     currency: 'USD',
     maximumFractionDigits: 0
   })
-  console.log(format.format(num))
   return format.format(num)
 }
 

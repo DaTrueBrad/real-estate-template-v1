@@ -21,14 +21,22 @@ import { Box } from "@mui/system";
 
 const DownloadCard = () => {
   return (
-    <Card className="download-card">
+    <Card
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        width: "fit-content",
+        maxWidth: "450px",
+      }}
+    >
       <CardHeader
-        title="Google Fiber Sign-up Document"
+        title="123456789012345 adfadf asdfas fasdf as "
         subheader="Updated: 04/15/2021"
       />
       <CardContent>
         <CardActions disableSpacing>
-          <Download fontSize="large" color="success"/>
+          <Download fontSize="large" color="success" />
         </CardActions>
       </CardContent>
     </Card>

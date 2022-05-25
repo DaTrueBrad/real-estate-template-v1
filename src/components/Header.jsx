@@ -1,22 +1,7 @@
-import {
-  AppBar,
-  Badge,
-  IconButton,
-  InputBase,
-  Stack,
-  TextField,
-  Toolbar,
-  Typography,
-  Button,
-} from "@mui/material";
+import { AppBar, Stack, Toolbar, Button } from "@mui/material";
 import React from "react";
-import { Link as RouterLink, Router } from "react-router-dom";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Search from "@mui/icons-material/Search";
-import logo from '../assets/logo.png'
-// import { Image } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 const Header = (props) => {
   return (
@@ -29,12 +14,12 @@ const Header = (props) => {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: 'center',
+          alignItems: "center",
           height: "100%",
           margin: "0px 10vw",
         }}
       >
-        <img src={logo} style={{height: "60px"}}/>
+        <img src={logo} style={{ height: "60px" }} />
 
         <Stack sx={{ display: "flex", flexDirection: "row" }}>
           <RouterLink to="/">
