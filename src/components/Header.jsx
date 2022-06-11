@@ -47,6 +47,11 @@ const Header = (props) => {
               Sign In
             </Button>
           </RouterLink>
+          <RouterLink to="/admin">
+            <Button color="inherit" sx={{ marginRight: "20px" }}>
+              Admin
+            </Button>
+          </RouterLink>
         </Stack>
       </Toolbar>
     </AppBar>

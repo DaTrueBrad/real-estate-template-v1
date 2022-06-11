@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/src/FIREBASE_CONFIG.js
 
 # testing
 /coverage

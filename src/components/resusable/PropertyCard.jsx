@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -20,52 +20,68 @@ import { CheckBox } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import missingImg from "../../assets/missingImg.png";
 
 // This is a styled component that allows for a rotating arrow
-const ExpandMore = styled((props: ExpandMoreProps) => { 
+const ExpandMore = styled((props: ExpandMoreProps) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
 }));
 
-const PropertyCard = ({house}) => {
-  const [expanded, setExpanded] = useState(false)
-  const navigate = useNavigate()
-  const price = useMoney(house.price)
+const PropertyCard = ({ house }) => {
+  const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
+  const price = useMoney(house.price);
   const addressLine = `${house.address1} ${house.address2}
-    ${house.city}, ${house.state} ${house.zip}`
-    const subtitle = <span style={{lineHeight: ""}}>{house.address1 + " " + house.address2}<br />{house.city + " " + house.state + " " + house.zip}</span>
-   
-  const handleExpandClick = () => setExpanded(!expanded)
+    ${house.city}, ${house.state} ${house.zip}`;
+  const subtitle = (
+    <span style={{ lineHeight: "" }}>
+      {house.address1 + " " + house.address2}
+      <br />
+      {house.city + " " + house.state + " " + house.zip}
+    </span>
+  );
+
+  const handleExpandClick = () => setExpanded(!expanded);
 
   const goToDetails = () => {
-    navigate(`/details/${house.id}`)
-  }
+    navigate(`/details/${house.id}`);
+  };
   return (
-    <Card className="propertyCard" id={expanded && "propertyCardActive"}>
+    <Card
+      variant="outlined"
+      className="propertyCard"
+      id={expanded && "propertyCardActive"}
+    >
       <CardHeader
         title={`${house.bed} Bed ${house.bath} Bath`}
         subheader={subtitle}
       />
       {/* <Typography variant="p">{addressLine}</Typography> */}
-      <CardMedia component="img" height="200" image={house.imageList[0]}  onClick={goToDetails}/>
-      <CardContent sx={{display: "flex", justifyContent: 'space-between'}}>
+      <CardMedia
+        component="img"
+        height="200"
+        image={house.imageList[0] ? house.imageList[0] : missingImg}
+        onClick={goToDetails}
+      />
+      <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="h4">{price}</Typography>
-      <CardActions disableSpacing>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
+        <CardActions disableSpacing>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
       </CardContent>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
@@ -73,12 +89,41 @@ const PropertyCard = ({house}) => {
           <Typography paragraph>
             This is a great property. Just look at it! Absolutely stunning!
           </Typography>
-          {house.garage && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Garage</Typography></Box>}
-          {house.heating && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Heating</Typography></Box>}
-          {house.laundry && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Laundry</Typography></Box>}
-          {house.pets && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Pet Friendly</Typography></Box>}
-          {house.wifi && <Box sx={{display: 'flex', alignItems: 'center'}}><CheckBox color="success"/><Typography variant="h5">Wifi</Typography></Box>}
-          <Button variant="contained" onClick={goToDetails}>See More</Button>
+          {house.garage && (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <CheckBox color="success" />
+              <Typography variant="h5">Garage</Typography>
+            </Box>
+          )}
+          {house.heating && (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <CheckBox color="success" />
+              <Typography variant="h5">Heating</Typography>
+            </Box>
+          )}
+          {house.laundry && (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <CheckBox color="success" />
+              <Typography variant="h5">Laundry</Typography>
+            </Box>
+          )}
+          {house.pets && (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <CheckBox color="success" />
+              <Typography variant="h5">Pet Friendly</Typography>
+            </Box>
+          )}
+          {house.wifi && (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <CheckBox color="success" />
+              <Typography variant="h5">Wifi</Typography>
+            </Box>
+          )}
+          <div className="center">
+            <Button variant="contained" onClick={goToDetails}>
+              See More
+            </Button>
+          </div>
         </CardContent>
       </Collapse>
     </Card>

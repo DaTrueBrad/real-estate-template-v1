@@ -20,7 +20,6 @@ import {
   doc,
   getDocs,
 } from "firebase/firestore";
-console.log(db)
 
 const HomeContext = createContext()
 
@@ -33,10 +32,8 @@ function App() {
     querySnapshot.forEach((doc) => {
       const newObj = doc.data()
       newObj.id = doc.id
-      // console.log(newObj);
       newArr.push(newObj)
     });
-    console.log("NewArr", newArr)
     setAllHomes(newArr)
   };
   useEffect(() => {

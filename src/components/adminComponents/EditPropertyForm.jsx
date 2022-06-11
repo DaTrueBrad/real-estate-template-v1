@@ -12,25 +12,24 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, } from "react";
 import { Field, useFormik } from "formik";
 import { Image } from "@mui/icons-material";
 import { collection, addDoc } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
-import db, {storage} from "../../FIREBASE_CONFIG";
+import db from "../../FIREBASE_CONFIG";
 import * as yup from "yup";
 
-const NewPropertyForm = () => {
+const EditPropertyForm = ({property}) => {
   const [open, setOpen] = useState(false);
   const [snackAlert, setSnackAlert] = useState({});
   const [images, setImages] = useState([]);
+  const [type, setType] = useState(property.type)
   const handleOpen = () => setOpen(true);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
   };
-
   const validationSchema = yup.object().shape({
     type: yup
       .string("Type must be a word")
@@ -84,43 +83,37 @@ const NewPropertyForm = () => {
     wifi: yup,
     laundry: yup,
   });
+
+  const initialValues = {
+    type: property.type,
+    address1: property.address1 ? property.address1 : "",
+    address2: property.address2 ? property.address2 : "",
+    city: property.city ? property.city : "",
+    state: property.state ? property.state : "",
+    zip: property.zip ? property.zip : "",
+    bed: property.bed ? property.bed : "",
+    bath: property.bath ? property.bath : "",
+    sqFeet: property.sqFeet ? property.sqFeet : "",
+    heating: property.heating ? property.heating : "",
+    garage: property.garage ? property.garage : false,
+    pets: property.pets ? property.pets : false,
+    wifi: property.wifi ? property.wifi : false,
+    laundry: property.laundry ? property.laundry : false,
+    deposit: property.deposit ? property.deposit : false,
+    price: property.price ? property.price : false,
+    //TODO Add image upload capability!
+  }
   
 
   const formik = useFormik({
-    initialValues: {
-      type: "",
-      address1: "",
-      address2: "",
-      city: "",
-      state: "",
-      zip: "",
-      bed: "",
-      bath: "",
-      sqFeet: "",
-      heating: "",
-      garage: false,
-      pets: false,
-      wifi: false,
-      laundry: false,
-      deposit: false,
-      price: false,
-      //TODO Add image upload capability!
-    },
+    initialValues: initialValues,
     // validationSchema: validationSchema,
     onSubmit: async (values) => {
-
-      images.forEach((image, index) => {
-        const storageRef = ref(storage, `${values.address1}${values.address2}${index}`);
-         uploadBytes(storageRef, image)
-          .then((snapshot) => console.log('success: ', snapshot))
-        })
-      
-      // const imageRef = []
-      
-        // values.imageList = images; 
-        // const docRef = await addDoc(collection(db, 'properties'), values)
-
-      
+      if(property.type) {
+      } else {
+        values.imageList = images;
+        const docRef = await addDoc(collection(db, 'properties'), values)
+      }
       if (values) {
         setSnackAlert({
           type: "success",
@@ -134,9 +127,29 @@ const NewPropertyForm = () => {
         });
         handleOpen();
       }
-
     },
   });
+
+  // useEffect(() => {
+  //   formik.values = {
+  //     type: property.type,
+  //     address1: property.address1 ? property.address1 : "",
+  //     address2: property.address2 ? property.address2 : "",
+  //     city: property.city ? property.city : "",
+  //     state: property.state ? property.state : "",
+  //     zip: property.zip ? property.zip : "",
+  //     bed: property.bed ? property.bed : "",
+  //     bath: property.bath ? property.bath : "",
+  //     sqFeet: property.sqFeet ? property.sqFeet : "",
+  //     heating: property.heating ? property.heating : "",
+  //     garage: property.garage ? property.garage : false,
+  //     pets: property.pets ? property.pets : false,
+  //     wifi: property.wifi ? property.wifi : false,
+  //     laundry: property.laundry ? property.laundry : false,
+  //     deposit: property.deposit ? property.deposit : false,
+  //     price: property.price ? property.price : false,
+  //   }
+  // },[property])
 
   const uploadMultipleFiles = (e) => {
     const raw = [];
@@ -151,17 +164,34 @@ const NewPropertyForm = () => {
   return (
     <Box sx={{ width: "50vw" }}>
       <Typography variant="h4" align="center">
-        New Property
+        {property.type ? "Edit" : "New"} Property
       </Typography>
       <form onSubmit={formik.handleSubmit}>
         <Box sx={{ display: "flex", flexDirection: "row", gap: 5 }}>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {/* <FormControl>
+          <InputLabel id="typeSelectLabel">Type</InputLabel>
+          <Select
+            labelId="typeSelectLabel"
+            id="typeSelect"
+            value={formik.values.type}
+            name="type"
+            color="primary"
+            variant="filled"
+            sx={{ width: 200 }}
+            onChange={formik.handleChange}
+          >
+            <MenuItem value="Rent">Rent</MenuItem>
+            <MenuItem value="Sale">Sale</MenuItem>
+            <MenuItem value="Student">Student</MenuItem>
+          </Select>
+        </FormControl> */}
             <TextField
               sx={{ width: 200 }}
               variant="filled"
               name="type"
               placeholder="Type"
-              value={formik.values.type}
+              value={type}
               onChange={formik.handleChange}
             />
             <TextField
@@ -354,4 +384,4 @@ const NewPropertyForm = () => {
   );
 };
 
-export default NewPropertyForm;
+export default EditPropertyForm;

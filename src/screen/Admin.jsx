@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, TextField, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import FilePresentIcon from '@mui/icons-material/FilePresent';
 import {
   collection,
   addDoc,
@@ -8,7 +9,7 @@ import {
   doc,
   getDocs,
 } from "firebase/firestore";
-import db from "../FIREBASE_CONFIG";
+import db, {storage} from "../FIREBASE_CONFIG";
 import {
   Add,
   Article,
@@ -21,11 +22,28 @@ import {
 } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import NewPropertyForm from "../components/adminComponents/NewPropertyForm";
+import EditPropertyForm from "../components/adminComponents/EditPropertyForm";
 
 const Admin = (props) => {
   const [allHomes, setAllHomes] = useState([]);
   const [openNew, setOpenNew] = useState(false);
+  const [selected, setSelected] = useState({})
   const [csv, setCsv] = useState(null);
+
+  const selectProperty = (values) => {
+    if(selected.address1 === values.address1) {
+      setOpenNew(false)
+
+      setSelected({})
+    } else {
+      setOpenNew(true)
+      setSelected(values)
+    }
+  }
+
+  // useEffect(() => {
+  //   selected.type ? setOpenNew(true) : setOpenNew(false)
+  // },[selected])
 
   const getData = async () => {
     const querySnapshot = await getDocs(collection(db, "properties"));
@@ -85,19 +103,24 @@ const Admin = (props) => {
     ]
       .map((e) => e.join(","))
       .join("\n");
-    console.log(csvString);
     let value = "data:text/csv;charset=utf-8," + encodeURI(csvString);
-    console.log(value);
     return value;
   };
 
-  console.log("csv: ", csv);
 
   useEffect(() => {
     getData();
   }, []);
 
   const columns = [
+    {
+      field: "imageList",
+      renderCell: (cellValues) => {
+        return (
+          <img src={cellValues.row.imageList[0]} style={{width: 80, aspectRatio: "16 / 9"}}/>
+        );
+      },
+    },,
     { field: "type", headerName: "Type", width: 80 },
     { field: "bed", headerName: "Bed", width: 50 },
     { field: "bath", headerName: "Bath", width: 50 },
@@ -118,7 +141,7 @@ const Admin = (props) => {
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => console.log(cellValues.row)} //! Set the onClick to a state containing the callvalues row. Display an edit form conditionally on the state being defined. on click, if state is defined and matches the cell values, set to blank, so the form disappears.
+            onClick={() => selectProperty(cellValues.row)} //! Set the onClick to a state containing the callvalues row. Display an edit form conditionally on the state being defined. on click, if state is defined and matches the cell values, set to blank, so the form disappears.
             startIcon={<Edit />}
           >
             Edit
@@ -138,6 +161,12 @@ const Admin = (props) => {
       },
     },
   ];
+
+  const form = allHomes
+    .filter((home, index) => home === selected)
+    .map((property, index) => {
+    return <EditPropertyForm property={property} />
+  })
 
   return (
     <div className="main-page">
@@ -166,6 +195,9 @@ const Admin = (props) => {
           </Button>
           <Button variant="outlined" startIcon={<Article />}>
             Leases
+          </Button>
+          <Button variant="outlined" startIcon={<FilePresentIcon />}>
+            Documents
           </Button>
         </Box>
 
@@ -202,11 +234,13 @@ const Admin = (props) => {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          checkboxSelection
+          // checkboxSelection
           sx={{ display: "flex", justifyContent: "center" }}
         />
       </div>
-      {openNew && <NewPropertyForm />}
+      <NewPropertyForm/>
+      {/* {selected.type && <EditPropertyForm property={selected} />} */}
+      {form}
     </div>
   );
 };

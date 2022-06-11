@@ -5,7 +5,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const Dropdown = () => {
+const Dropdown = ({question}) => {
   return (
     <Accordion sx={{width: '50vw'}}>
         <AccordionSummary
@@ -13,11 +13,11 @@ const Dropdown = () => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>What are your business hours?</Typography>
+          <Typography>{question.question}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            We are open weekdays 8:00a - 5:00p<br />Saturdays 10:00a - 3:00p<br />Sundays by Appointment
+            {question.answer}
           </Typography>
         </AccordionDetails>
       </Accordion>
