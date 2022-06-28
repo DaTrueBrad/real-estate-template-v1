@@ -41,9 +41,9 @@ const Admin = (props) => {
     }
   }
 
-  // useEffect(() => {
-  //   selected.type ? setOpenNew(true) : setOpenNew(false)
-  // },[selected])
+  useEffect(() => {
+    selected.type ? setOpenNew(true) : setOpenNew(false)
+  },[selected])
 
   const getData = async () => {
     const querySnapshot = await getDocs(collection(db, "properties"));
@@ -238,7 +238,8 @@ const Admin = (props) => {
           sx={{ display: "flex", justifyContent: "center" }}
         />
       </div>
-      <NewPropertyForm/>
+      {/* <NewPropertyForm/> */}
+      {openNew && <NewPropertyForm />}
       {/* {selected.type && <EditPropertyForm property={selected} />} */}
       {form}
     </div>
