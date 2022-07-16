@@ -15,21 +15,39 @@ import {
 import React, { useState, useEffect } from "react";
 import { Field, useFormik } from "formik";
 import { Image } from "@mui/icons-material";
-import { collection, addDoc } from "firebase/firestore";
-import { ref, uploadBytes } from "firebase/storage";
-import db, {storage} from "../../FIREBASE_CONFIG";
+import { collection, addDoc, FieldValue, arrayUnion } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import db, { storage } from "../../FIREBASE_CONFIG";
 import * as yup from "yup";
 
 const NewPropertyForm = () => {
   const [open, setOpen] = useState(false);
   const [snackAlert, setSnackAlert] = useState({});
   const [images, setImages] = useState([]);
+  const [rawFiles, setRawFiles] = useState({});
+  const [imgUrls, setImgUrls] = useState([]);
   const handleOpen = () => setOpen(true);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
     setOpen(false);
   };
+
+  const getLinks = async (values) => {
+    const array = [];
+    for await (const file of rawFiles) {
+      const storageRef = ref(storage, `/houses/${file.name}`);
+      uploadBytes(storageRef, file).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => array.push(url));
+      });
+    }
+    return Promise.allSettled(array);  
+    // return array;
+  };
+
+  // useEffect(() => {
+
+  // },[imgUrls])
 
   const validationSchema = yup.object().shape({
     type: yup
@@ -38,24 +56,21 @@ const NewPropertyForm = () => {
       .max(10, "Property type cannot be longer than 10 characters")
       .required("Please declare a property type"),
     address1: yup
-    .string("Address 1 must be a string of characters")
+      .string("Address 1 must be a string of characters")
       .min(4, "Address 1 must be longer than 4 characters")
       .max(35, "Address 1 cannot be longer than 35 characters")
       .required("Please provide an Address"),
     address2: yup
-    .string("Address 2 must be a string of characters")
-    .max(8, "Address 2 has a max of 8 characters")  
-    .matches(
-      /^[a-z0-9]+$/i,
-      "Must only contain Alphanumeric characters"
-    ),
+      .string("Address 2 must be a string of characters")
+      .max(8, "Address 2 has a max of 8 characters")
+      .matches(/^[a-z0-9]+$/i, "Must only contain Alphanumeric characters"),
     city: yup
-    .string("City must be a word")
+      .string("City must be a word")
       .min(2, "City must be longer than 2 characters")
       .max(35, "City cannot be longer than 35 characters")
       .required("Please provide a city"),
     state: yup
-    .string("State must be a 2 character abbreviaton")
+      .string("State must be a 2 character abbreviaton")
       .min(2, "State must be 2 characters long")
       .max(2, "State must be 2 characters long")
       .required("Please provide a state"),
@@ -84,7 +99,10 @@ const NewPropertyForm = () => {
     wifi: yup,
     laundry: yup,
   });
-  
+
+  const handleImages = async () => {
+    const imageArray = [];
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -97,55 +115,57 @@ const NewPropertyForm = () => {
       bed: "",
       bath: "",
       sqFeet: "",
-      heating: "",
+      heating: false,
       garage: false,
       pets: false,
       wifi: false,
       laundry: false,
       deposit: false,
       price: false,
-      //TODO Add image upload capability!
+      imageList: [],
     },
     // validationSchema: validationSchema,
     onSubmit: async (values) => {
-
-      images.forEach((image, index) => {
-        const storageRef = ref(storage, `${values.address1}${values.address2}${index}`);
-         uploadBytes(storageRef, image)
-          .then((snapshot) => console.log('success: ', snapshot))
+      getLinks(values)
+      .then(async (imageArray) => {
+        await imageArray //=========================================================<<<<<<<<<<<<<<<<<<<<<<<<<<
+        const newVals = {...values, imageList: [...imageArray]} 
+        // const newVals = {...values, imageList: ["Hello, this is an array", "So cool"]} 
+        return newVals;
+      })
+        .then(async (newValues) => {
+          console.log(newValues);
+          const docRef = await addDoc(collection(db, "properties"), newValues);
         })
-      
-      // const imageRef = []
-      
-        // values.imageList = images; 
-        // const docRef = await addDoc(collection(db, 'properties'), values)
-
-      
-      if (values) {
-        setSnackAlert({
-          type: "success",
-          message: "You provided values!! Congrats!",
+        .finally(() => {
+          setSnackAlert({
+            type: "success",
+            message: "You provided values!! Congrats!",
+          });
+          handleOpen();
+        })
+        .catch((err) => {
+          console.log(err)
+          setSnackAlert({
+            type: "error",
+            message: "There was an error handling your request",
+          });
+          handleOpen();
         });
-        handleOpen();
-      } else {
-        setSnackAlert({
-          type: "error",
-          message: "There was an error handling your request",
-        });
-        handleOpen();
-      }
-
     },
   });
 
   const uploadMultipleFiles = (e) => {
     const raw = [];
     const newImages = [];
+    setRawFiles(e.target.files);
     raw.push(e.target.files);
     for (let i = 0; i < raw[0].length; i++) {
       newImages.push(URL.createObjectURL(raw[0][i]));
     }
     setImages(newImages);
+
+    const myFiles = e.target.files;
   };
 
   return (
@@ -350,6 +370,7 @@ const NewPropertyForm = () => {
           {snackAlert.message}
         </Alert>
       </Snackbar>
+      {/* <img src="https://firebasestorage.googleapis.com/v0/b/real-estate-template-84b65.appspot.com/o/houses%2F20220609_115123.jpg?alt=media&token=755b49fc-b9a8-4dc6-a14a-56b866534b03" /> */}
     </Box>
   );
 };
