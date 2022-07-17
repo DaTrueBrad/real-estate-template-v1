@@ -35,13 +35,20 @@ const NewPropertyForm = () => {
 
   const getLinks = async (values) => {
     const array = [];
-    for await (const file of rawFiles) {
-      const storageRef = ref(storage, `/houses/${file.name}`);
-      uploadBytes(storageRef, file).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => array.push(url));
-      });
+    const files = [...rawFiles];
+    console.log(files);
+    for (const file of files) {
+      console.log(file.name);
+      try {
+        const storageRef = await ref(storage, `/houses/${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(snapshot.ref);
+        array.push(url);
+      } catch (err) {
+        console.log(err);
+      }
     }
-    return Promise.allSettled(array);  
+    return Promise.allSettled(array);
     // return array;
   };
 
@@ -127,12 +134,15 @@ const NewPropertyForm = () => {
     // validationSchema: validationSchema,
     onSubmit: async (values) => {
       getLinks(values)
-      .then(async (imageArray) => {
-        await imageArray //=========================================================<<<<<<<<<<<<<<<<<<<<<<<<<<
-        const newVals = {...values, imageList: [...imageArray]} 
-        // const newVals = {...values, imageList: ["Hello, this is an array", "So cool"]} 
-        return newVals;
-      })
+        .then((imageArray) => {
+          let newArray = []
+          for(let img of imageArray) {
+            newArray.push(img.value)
+          }
+          console.log(newArray)
+          const newVals = { ...values, imageList: newArray };
+          return newVals;
+        })
         .then(async (newValues) => {
           console.log(newValues);
           const docRef = await addDoc(collection(db, "properties"), newValues);
@@ -152,7 +162,7 @@ const NewPropertyForm = () => {
           });
           handleOpen();
         });
-    },
+      }
   });
 
   const uploadMultipleFiles = (e) => {
@@ -347,7 +357,7 @@ const NewPropertyForm = () => {
         <Box sx={{ height: 40 }}>
           {/* //TODO could we impliment a drag/drop to reorder the images? */}
           {images.map((pic, index) => {
-            return <img src={pic} style={{ height: "100%" }} />;
+            return <img src={pic} key={pic} style={{ height: "100%" }} />;
           })}
         </Box>
 
