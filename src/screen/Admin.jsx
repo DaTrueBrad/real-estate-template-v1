@@ -1,15 +1,20 @@
+import Swal from "sweetalert2";
 import React, { useEffect, useState } from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, Tab, TextField, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import FilePresentIcon from '@mui/icons-material/FilePresent';
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import FilePresentIcon from "@mui/icons-material/FilePresent";
+import Properties from "../components/adminComponents/Properties";
+import Spinner from "../components/resusable/Spinner";
 import {
   collection,
   addDoc,
   updateDoc,
   doc,
   getDocs,
+  deleteDoc,
 } from "firebase/firestore";
-import db, {storage} from "../FIREBASE_CONFIG";
+import db, { storage } from "../FIREBASE_CONFIG";
 import {
   Add,
   Article,
@@ -23,29 +28,34 @@ import {
 import { Box } from "@mui/system";
 import NewPropertyForm from "../components/adminComponents/NewPropertyForm";
 import EditPropertyForm from "../components/adminComponents/EditPropertyForm";
+import Users from "../components/adminComponents/Users";
 
 const Admin = (props) => {
-  const [allHomes, setAllHomes] = useState([]);
+  const [data, setData] = useState([]);
+  const [properties, setProperties] = useState([])
+  const [users, setUsers] = useState([])
+  const [infoType, setInfoType] = useState("properties");
   const [openNew, setOpenNew] = useState(false);
-  const [selected, setSelected] = useState({})
+  const [selected, setSelected] = useState({});
   const [csv, setCsv] = useState(null);
+  const handleChange = (e, newValue) => setInfoType(newValue);
+  console.log(data);
+  // const selectProperty = (values) => {
+  //   if (selected.address1 === values.address1) {
+  //     setOpenNew(false);
 
-  const selectProperty = (values) => {
-    if(selected.address1 === values.address1) {
-      setOpenNew(false)
-
-      setSelected({})
-    } else {
-      setOpenNew(true)
-      setSelected(values)
-    }
-  }
+  //     setSelected({});
+  //   } else {
+  //     setOpenNew(true);
+  //     setSelected(values);
+  //   }
+  // };
 
   useEffect(() => {
-    selected.type ? setOpenNew(true) : setOpenNew(false)
-  },[selected])
+    selected.type ? setOpenNew(true) : setOpenNew(false);
+  }, [selected]);
 
-  const getData = async () => {
+  const getProperties = async () => {
     const querySnapshot = await getDocs(collection(db, "properties"));
     const newArr = [];
 
@@ -55,12 +65,13 @@ const Admin = (props) => {
       newArr.push(newObj);
     });
 
-    setAllHomes(newArr);
+    setProperties(newArr);
     let thing = await createCSV(newArr); //trying to create a CSV
     setCsv(thing);
   };
 
   const createCSV = async (arr) => {
+    //TODO i need to create possible CSV formats for each collection. Currently we only have one for properties
     const csvString = [
       [
         "ID",
@@ -107,66 +118,9 @@ const Admin = (props) => {
     return value;
   };
 
-
   useEffect(() => {
-    getData();
+    getProperties();
   }, []);
-
-  const columns = [
-    {
-      field: "imageList",
-      renderCell: (cellValues) => {
-        return (
-          <img src={cellValues.row.imageList[0]} style={{width: 80, aspectRatio: "16 / 9"}}/>
-        );
-      },
-    },,
-    { field: "type", headerName: "Type", width: 80 },
-    { field: "bed", headerName: "Bed", width: 50 },
-    { field: "bath", headerName: "Bath", width: 50 },
-    { field: "address1", headerName: "Address 1", width: 200 },
-    { field: "address2", headerName: "Address 2" },
-    { field: "city", headerName: "City", width: 150 },
-    { field: "state", headerName: "State", width: 55 },
-    { field: "zip", headerName: "Zip", width: 70 },
-    { field: "heating", headerName: "Heat", width: 60 },
-    { field: "wifi", headerName: "WiFi", width: 60 },
-    { field: "pets", headerName: "Pets", width: 60 },
-    { field: "garage", headerName: "Garage", width: 70 },
-    { field: "laundry", headerName: "Laundry", width: 70 },
-    {
-      field: "Edit",
-      renderCell: (cellValues) => {
-        return (
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => selectProperty(cellValues.row)} //! Set the onClick to a state containing the callvalues row. Display an edit form conditionally on the state being defined. on click, if state is defined and matches the cell values, set to blank, so the form disappears.
-            startIcon={<Edit />}
-          >
-            Edit
-          </Button>
-        );
-      },
-    },
-    {
-      field: "Delete",
-      width: 150,
-      renderCell: (cellValues) => {
-        return (
-          <Button variant="outlined" color="error" startIcon={<Delete />}>
-            Delete
-          </Button>
-        );
-      },
-    },
-  ];
-
-  const form = allHomes
-    .filter((home, index) => home === selected)
-    .map((property, index) => {
-    return <EditPropertyForm property={property} />
-  })
 
   return (
     <div className="main-page">
@@ -178,70 +132,42 @@ const Admin = (props) => {
         template is converted over to your company, this will be locked behind
         an authentication wall.
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          width: "90%",
-          justifyContent: "space-between",
-          marginBottom: 5,
-        }}
-      >
-        <Box sx={{ display: "flex", gap: 3 }}>
-          <Button variant="contained" startIcon={<Home />}>
-            Properties
-          </Button>
-          <Button variant="outlined" startIcon={<Person />}>
-            Users
-          </Button>
-          <Button variant="outlined" startIcon={<Article />}>
-            Leases
-          </Button>
-          <Button variant="outlined" startIcon={<FilePresentIcon />}>
-            Documents
-          </Button>
-        </Box>
-
-        <Box sx={{ display: "flex", gap: 3 }}>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={() => setOpenNew(!openNew)}
-          >
-            New
-          </Button>
-
-          <Button
-            variant="outlined"
-            startIcon={<Upload />}
-            // onClick={exportData}
-            href={csv}
-            download="properties.csv"
-          >
-            Export
-          </Button>
-        </Box>
-      </Box>
-      <div
-        style={{
-          height: 400,
-          width: "90%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <DataGrid
-          rows={allHomes}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          // checkboxSelection
-          sx={{ display: "flex", justifyContent: "center" }}
-        />
-      </div>
-      {/* <NewPropertyForm/> */}
-      {openNew && <NewPropertyForm />}
-      {/* {selected.type && <EditPropertyForm property={selected} />} */}
-      {form}
+      <TabContext value={infoType}>
+        <TabList onChange={handleChange}>
+          <Tab label="Properties" value="properties" />
+          <Tab label="Users" value="users" />
+          <Tab label="Documents" value="documents" />
+          {/* <Box sx={{ display: "flex", gap: 3, margin: "0px 30px" }}>
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => setOpenNew(!openNew)}
+            >
+              New
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<Upload />}
+              // onClick={exportData}
+              href={csv}
+              download="properties.csv"
+            >
+              Export
+            </Button>
+          </Box> */}
+        </TabList>
+        {/* <Spinner /> */}
+        <TabPanel
+          variant="section"
+          value="properties"
+          className="admin-section"
+        >
+          <Properties data={properties} getProperties={getProperties}/>
+        </TabPanel>
+        <TabPanel variant="section" value="users" className="admin-section">
+          <Users />
+        </TabPanel>
+      </TabContext>
     </div>
   );
 };
